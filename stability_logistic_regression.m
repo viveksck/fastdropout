@@ -1,20 +1,16 @@
+function [results] = stability_logistic_regression(Xtrain, ytrain, Xtest, ytest, ratio)
 addpath(genpath('binaryLRloss'));
-load('example_data.mat');
-% Make sure we allways have the same split of training and test data
-rng(0, 'twister')
-C = cvpartition(y, 'kfold',2);
-Xtest = X(C.test(1),:);
-ytest = y(C.test(1));
-Xtrain = X(C.test(2),:);
-ytrain = y(C.test(2));
+% Make sure we always have the same split of training and test data
 rng('shuffle')
-size(Xtrain)
-cv = cvpartition(ytrain, 'holdout');
-Xtrain = Xtrain(training(cv,1), :);
-ytrain = ytrain(training(cv,1), :);
-size(Xtrain)
+% Hold out data only if required to.
+if ratio > 0.0
+  cv = cvpartition(ytrain, 'holdout', ratio);
+  Xtrain = Xtrain(training(cv,1), :);
+  ytrain = ytrain(training(cv,1), :);
+  size(Xtrain)
+end
 %%
-w_init = 0*randn(size(X,2),1);
+w_init = 0*randn(size(Xtrain,2),1);
 mfOptions.Method = 'lbfgs';
 mfOptions.optTol = 2e-2;
 mfOptions.progTol = 2e-6;
@@ -24,7 +20,7 @@ mfOptions.MaxIter = 1000;
 mfOptions.DerivativeCheck = 0;
 mfOptions.useMex=0;
 results = containers.Map;
-casenames = {'LR','DetDropout', 'Dropout'};
+casenames = {'LR', 'DetDropout', 'Dropout'};
 for casenum = 1:length(casenames)
     obj = casenames{casenum};
     switch obj
@@ -58,4 +54,5 @@ end
 keys = results.keys;
 for i=1:length(keys)
     fprintf('%s: %f\n', keys{i}, results(keys{i}));
+end
 end
