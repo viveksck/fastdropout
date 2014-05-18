@@ -11,6 +11,9 @@ for index=1:length(ratios)
     dropout_results(index)=mean(f('Dropout'))
     detdropout_results(index)=mean(f('DetDropout'))
 end
-plot(ratios(1:5), abs(diff(lr_results)), ratios(1:5), abs(diff(dropout_results)), ratios(1:5), abs(diff(detdropout_results)))
+plot(ratios(1:5), abs(diff(lr_results)), 'o-', ratios(1:5), abs(diff(dropout_results)), 'o-', ratios(1:5), abs(diff(detdropout_results)), 'o-')
 legend('LR', 'Dropout', 'DetDropout')
+title('Difference in mean test errors between consecutive proportions of training data')
+xlabel('Proportion')
+ylabel('Difference in mean test error')
 
