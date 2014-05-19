@@ -1,6 +1,6 @@
 function [] = StabilityLinearRegPlot(file)
 M = load(file)
-ratios=[0.0, 0.1, 0.2, 0.3, 0.4, 0.5]
+ratios=[0.0, 0.05, 0.1, 0.15, 0.2, 0.3, 0.4, 0.5]
 lr_results=[]
 dropout_results=[]
 detdropout_results=[]
@@ -10,10 +10,10 @@ for index=1:length(ratios)
     lr_results(index)=mean(f('LinearReg'))
     dropout_results(index)=mean(f('DropoutLinearReg'))
 end
-plot(ratios(1:5), abs(diff(lr_results)), 'o-', ratios(1:5), abs(diff(dropout_results)), 'o-')
+hold on
+plot(ratios, abs(lr_results - lr_results(1)), 'bo-', 'LineWidth', 2)
+plot(ratios, abs(dropout_results - dropout_results(1)), 'go-', 'LineWidth', 2)
 legend('LR', 'Dropout')
-title('Difference in mean test errors between consecutive proportions of training data')
-xlabel('Proportion')
+xlabel('Proportion of training data removed')
 ylabel('Difference in mean test error')
 end
-

@@ -26,21 +26,21 @@ for casenum = 1:length(casenames)
     switch obj
         case 'LR'
             funObj = @(w)LogisticLoss(w,Xtrain,ytrain);
-            lambdaL2=0.01; 
+            lambdaL2=0.00; 
 % you can optimize this value on the test set,
 % and LR would still be quite a bit worse
             
         case 'DetDropout'
             funObj = @(w)LogisticLossDetObjDropout(w,Xtrain,ytrain,0.5);
-            lambdaL2=0.01;
+            lambdaL2=0.00;
             
         case 'DetDropoutApprox'
             funObj = @(w)LogisticLossDetObjDropoutDeltaApprox(w,Xtrain,ytrain,0.5);
-            lambdaL2=0.01;
+            lambdaL2=0.00;
             
         case 'Dropout'
             funObj = @(w)LogisticLossMCDropoutSample(w,Xtrain,ytrain,0.5,100,100);
-            lambdaL2=0.01;
+            lambdaL2=0.00;
     end
     
     funObjL2 = @(w)penalizedL2(w,funObj,lambdaL2);

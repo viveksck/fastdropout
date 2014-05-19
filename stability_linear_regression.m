@@ -29,7 +29,7 @@ for casenum = 1:length(casenames)
             funObj = @(w)LinearRegLoss(w,Xtrain,ytrain);
             lambdaL2 = 0.0;
         case 'DropoutLinearReg'
-            funObj = @(w)LinRegLossMCDropoutSample(w,Xtrain,ytrain,1.0,100,100);
+            funObj = @(w)LinRegLossMCDropoutSample(w,Xtrain,ytrain,0.95,100,100);
             lambdaL2 = 0.0;
     end
     

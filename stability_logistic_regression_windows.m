@@ -1,7 +1,8 @@
 addpath(genpath('binaryLRloss'));
 load('windowsgold.mat');
 % Make sure we allways have the same split of training and test data
-rand('seed', 0)
+rng(0, 'twister')
+%rand('seed', 0)
 C = cvpartition(y, 'kfold',2);
 Xtest = X(C.test(1),:);
 ytest = y(C.test(1));
