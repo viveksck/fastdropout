@@ -13,7 +13,7 @@ end
 hold on
 plot(ratios, abs(lr_results - lr_results(1)), 'bo-', 'LineWidth', 2)
 plot(ratios, abs(dropout_results - dropout_results(1)), 'go-', 'LineWidth', 2)
-legend('LR', 'Dropout')
+legend('LinearReg', 'Dropout')
 xlabel('Proportion of training data removed')
 ylabel('Difference in mean test error')
 end
