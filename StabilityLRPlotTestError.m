@@ -12,11 +12,11 @@ for index=1:length(ratios)
     f = M.output(ratio)
     %f('Key') stores the accuracy. so 1.0 - accuracy gives error.
     lr_results(index)=mean(1.0-f('LR'))
-    lr_results_error(index)=std(1.0-f('LR')/sqrt(length(f('LR'))));
+    lr_results_error(index)=std(1.0-f('LR'))/sqrt(length(f('LR')));
     dropout_results(index)=mean(1.0-f('Dropout'))
-    dropout_results_error(index)=std(1.0-f('Dropout')/sqrt(length(f('Dropout'))));
+    dropout_results_error(index)=std(1.0-f('Dropout'))/sqrt(length(f('Dropout')));
     detdropout_results(index)=mean(1.0-f('DetDropout'))
-    detdropout_results_error(index)=std(1.0-f('DetDropout')/sqrt(length(f('DetDropout'))));
+    detdropout_results_error(index)=std(1.0-f('DetDropout'))/sqrt(length(f('DetDropout')));
 end
 figure(1)
 hold on

@@ -1,13 +1,24 @@
-function [results] = stability_logistic_regression(Xtrain, ytrain, Xtest, ytest, ratio)
+function [results] = stability_logistic_regression_adversarial(Xtrain, ytrain, Xtest, ytest, ratio, model_file)
 addpath(genpath('binaryLRloss'));
 % Make sure we always have the same split of training and test data
-rand('seed', now)
 % Hold out data only if required to.
 if ratio > 0.0
-  cv = cvpartition(ytrain, 'holdout', ratio);
-  Xtrain = Xtrain(training(cv,1), :);
-  ytrain = ytrain(training(cv,1), :);
-  size(Xtrain)
+  pw = load(model_file);
+  proj = full(Xtrain) * pw.w;
+  proj = abs(proj);
+  Xtraintemp = [full(Xtrain) proj];
+  ytraintemp = [ytrain proj];
+  xsize = size(Xtraintemp);
+  ysize = size(ytraintemp);
+  Xtraintempsorted = sortrows(Xtraintemp, xsize(2));
+  ytraintempsorted = sortrows(ytraintemp, ysize(2));
+  
+  Xtrainnew = Xtraintempsorted(:,1:xsize(2)-1);
+  ytrainnew = ytraintempsorted(:,1:ysize(2)-1);
+  
+  num_remove = ratio * xsize(1);
+  Xtrain = Xtrainnew((num_remove + 1):xsize(1),:);
+  ytrain = ytrainnew((num_remove + 1):ysize(1),:); 
 end
 %%
 w_init = 0*randn(size(Xtrain,2),1);
@@ -49,6 +60,11 @@ for casenum = 1:length(casenames)
     acc = sum(ypred == (ytest+1)/2 )/length(ytest);
     resultname = [casenames{casenum}];
     results(resultname) = acc;
+    if ratio == 0.0 
+        if casenum == 1
+            save(model_file, 'w')
+        end
+    end
 end
 
 keys = results.keys;

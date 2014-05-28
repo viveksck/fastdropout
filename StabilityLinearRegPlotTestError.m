@@ -9,9 +9,9 @@ for index=1:length(ratios)
     ratio=ratios(index)
     f = M.output(ratio)
     lr_results(index)=mean(f('LinearReg'))
-    lr_results_error(index)=std(f('LinearReg')/sqrt(length(f('LinearReg'))));
+    lr_results_error(index)=std(f('LinearReg'))/sqrt(length(f('LinearReg')));
     dropout_results(index)=mean(f('DropoutLinearReg'))
-    dropout_results_error(index)=std(f('DropoutLinearReg')/sqrt(length(f('DropoutLinearReg'))));
+    dropout_results_error(index)=std(f('DropoutLinearReg'))/sqrt(length(f('DropoutLinearReg')));
 end
 figure(1)
 hold on

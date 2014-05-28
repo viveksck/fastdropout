@@ -1,7 +1,7 @@
 function [results] = stability_linear_regression(Xtrain, ytrain, Xtest, ytest, ratio)
 addpath(genpath('LinearRegLoss'));
 % Make sure we always have the same split of training and test data
-rng('shuffle')
+rand('seed', now)
 % Hold out data only if required to.
 if ratio > 0.0
   cv = cvpartition(ytrain, 'holdout', ratio);
