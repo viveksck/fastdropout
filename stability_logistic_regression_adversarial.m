@@ -1,4 +1,4 @@
-function [results] = stability_logistic_regression_adversarial(Xtrain, ytrain, Xtest, ytest, ratio, model_file)
+function [results] = stability_logistic_regression_adversarial(Xtrain, ytrain, Xtest, ytest, ratio, model_file, num)
 addpath(genpath('binaryLRloss'));
 % Make sure we always have the same split of training and test data
 % Hold out data only if required to.
@@ -15,8 +15,11 @@ if ratio > 0.0
   
   Xtrainnew = Xtraintempsorted(:,1:xsize(2)-1);
   ytrainnew = ytraintempsorted(:,1:ysize(2)-1);
-  
-  num_remove = ratio * xsize(1);
+  if num == 1
+    num_remove=ratio
+  else 
+    num_remove = ratio * xsize(1)
+  end
   Xtrain = Xtrainnew((num_remove + 1):xsize(1),:);
   ytrain = ytrainnew((num_remove + 1):ysize(1),:); 
 end

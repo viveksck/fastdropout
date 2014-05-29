@@ -1,4 +1,4 @@
-function [output] = run_stability_logistic_regression_experiment_adversarial(Xtrain, ytrain, Xtest, ytest, ratios, numRuns, model_file)
+function [output] = run_stability_logistic_regression_experiment_adversarial(Xtrain, ytrain, Xtest, ytest, ratios, numRuns, model_file, num)
 output=containers.Map('KeyType','double','ValueType','any');
 for i=1:length(ratios)
     ratio = ratios(i);
@@ -12,7 +12,7 @@ for i=1:length(ratios)
         temp_dropout = temp('Dropout');
         temp_det_dropout = temp('DetDropout');
         
-        results = stability_logistic_regression_adversarial(Xtrain, ytrain, Xtest, ytest,ratio, model_file);
+        results = stability_logistic_regression_adversarial(Xtrain, ytrain, Xtest, ytest,ratio, model_file, num);
         temp_lr(j) = results('LR');
         temp_dropout(j) = results('Dropout');
         temp_det_dropout(j) = results('DetDropout');
