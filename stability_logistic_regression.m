@@ -1,7 +1,7 @@
-function [results] = stability_logistic_regression(Xtrain, ytrain, Xtest, ytest, ratio)
+function [results] = stability_logistic_regression(Xtrain, ytrain, Xtest, ytest, ratio, l2reg)
 addpath(genpath('binaryLRloss'));
 % Make sure we always have the same split of training and test data
-rand('seed', now)
+rand('seed',sum(100*clock))
 % Hold out data only if required to.
 if ratio > 0.0
   cv = cvpartition(ytrain, 'holdout', ratio);
@@ -19,6 +19,7 @@ mfOptions.LS_init = 2;
 mfOptions.MaxIter = 1000;
 mfOptions.DerivativeCheck = 0;
 mfOptions.useMex=0;
+mfOptions.Display='off'
 results = containers.Map;
 casenames = {'LR', 'DetDropout', 'Dropout'};
 for casenum = 1:length(casenames)
@@ -26,7 +27,7 @@ for casenum = 1:length(casenames)
     switch obj
         case 'LR'
             funObj = @(w)LogisticLoss(w,Xtrain,ytrain);
-            lambdaL2=0.00; 
+            lambdaL2 = l2reg; 
 % you can optimize this value on the test set,
 % and LR would still be quite a bit worse
             

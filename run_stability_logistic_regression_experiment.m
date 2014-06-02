@@ -1,4 +1,4 @@
-function [output] = run_stability_logistic_regression_experiment(Xtrain, ytrain, Xtest, ytest, ratios, numRuns)
+function [output] = run_stability_logistic_regression_experiment(Xtrain, ytrain, Xtest, ytest, ratios, numRuns, l2reg)
 output=containers.Map('KeyType','double','ValueType','any');
 for i=1:length(ratios)
     ratio = ratios(i);
@@ -12,7 +12,7 @@ for i=1:length(ratios)
         temp_dropout = temp('Dropout');
         temp_det_dropout = temp('DetDropout');
         
-        results = stability_logistic_regression(Xtrain, ytrain, Xtest, ytest, ratio);
+        results = stability_logistic_regression(Xtrain, ytrain, Xtest, ytest, ratio, l2reg);
         temp_lr(j) = results('LR');
         temp_dropout(j) = results('Dropout');
         temp_det_dropout(j) = results('DetDropout');
