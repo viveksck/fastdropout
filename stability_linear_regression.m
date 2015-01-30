@@ -1,7 +1,7 @@
-function [results] = stability_linear_regression(Xtrain, ytrain, Xtest, ytest, ratio)
+function [results] = stability_linear_regression(Xtrain, ytrain, Xtest, ytest, ratio, l2reg)
 addpath(genpath('LinearRegLoss'));
 % Make sure we always have the same split of training and test data
-rand('seed', now)
+rng('shuffle')
 % Hold out data only if required to.
 if ratio > 0.0
   cv = cvpartition(ytrain, 'holdout', ratio);
@@ -27,7 +27,7 @@ for casenum = 1:length(casenames)
     switch obj
         case 'LinearReg'
             funObj = @(w)LinearRegLoss(w,Xtrain,ytrain);
-            lambdaL2 = 0.0;
+            lambdaL2 = l2reg;
         case 'DropoutLinearReg'
             funObj = @(w)LinRegLossMCDropoutSample(w,Xtrain,ytrain,0.95,100,100);
             lambdaL2 = 0.0;

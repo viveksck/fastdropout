@@ -1,7 +1,7 @@
 function [results] = stability_logistic_regression(Xtrain, ytrain, Xtest, ytest, ratio, l2reg)
 addpath(genpath('binaryLRloss'));
 % Make sure we always have the same split of training and test data
-rand('seed',sum(100*clock))
+rng('shuffle')
 % Hold out data only if required to.
 if ratio > 0.0
   cv = cvpartition(ytrain, 'holdout', ratio);
